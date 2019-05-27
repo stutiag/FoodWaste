@@ -12,5 +12,13 @@
         <servlet-name>ser1</servlet-name>
         <url-pattern>/ser1</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ser2</servlet-name>
+        <servlet-class>ser2</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ser2</servlet-name>
+        <url-pattern>/ser2</url-pattern>
+    </servlet-mapping>
              
 </web-app>
