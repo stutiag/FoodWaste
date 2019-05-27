@@ -11,7 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Admin
@@ -72,24 +74,97 @@ public class ser1 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String busname, Fname, Lname, Email, Contact, Address;
+        String register=request.getParameter("FormName");
+        String str1="donator";
+        String str2="recipient";
+        if(register.equals(str1))
+        {
+        String busname, Fname, Lname, Email, Contact, Address,Password;
         busname = request.getParameter("business_name");
         Fname = request.getParameter("fname");
-        Lname = request.getParameter("Lname");
+        Lname = request.getParameter("lname");
         Email = request.getParameter("email");
         Contact = request.getParameter("contact");
         Address = request.getParameter("street") + request.getParameter("city") + request.getParameter("state") + request.getParameter("zip");
-        out.println(busname);
+        Password=request.getParameter("pass");
+        /*out.println(busname);
         out.println(Fname);
         out.println(Lname);
         out.println(Email);
         out.println(Contact);
-        out.println(Address);
+        out.println(Address);*/
+        try
+        {
+        Class.forName("com.mysql.jdbc.Driver");   
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
+        Statement smt=con.createStatement();
+        String query ="insert into users(firstname,lastname,email,contact,address,password,type) values ('"+Fname+"','"+Lname+"','"+Email+"','"+Contact+"','"+Address+"','"+Password+"','"+register+"')";
+        String query2="insert into donators(businessname,email) values('"+busname+"','"+Email+"')";
+        int i=smt.executeUpdate(query);
+        int j=smt.executeUpdate(query2);
+        if(i>0 && j>0)
+        {
         response.sendRedirect("index.html");
-        
-        
-    }
+        }
+        else
+        {
+            out.println("record not inserted");
+        }
+        }
+        catch(ClassNotFoundException ex)
+        {
+            out.println(ex);
+        }
+        catch (SQLException ex) 
+        { 
+             Logger.getLogger(ser1.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        }
 
+    else if(register.equals(str2))
+        {
+        String busname, Fname, Lname, Email, Contact, Address,Password;
+        busname = request.getParameter("business_name");
+        Fname = request.getParameter("fname");
+        Lname = request.getParameter("lname");
+        Email = request.getParameter("email");
+        Contact = request.getParameter("contact");
+        Address = request.getParameter("street") + request.getParameter("city") + request.getParameter("state") + request.getParameter("zip");
+        Password=request.getParameter("pass");
+        /*out.println(busname);
+        out.println(Fname);
+        out.println(Lname);
+        out.println(Email);
+        out.println(Contact);
+        out.println(Address);*/
+        try
+        {
+        Class.forName("com.mysql.jdbc.Driver");   
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
+        Statement smt=con.createStatement();
+        String query ="insert into users(firstname,lastname,email,contact,address,password,type) values ('"+Fname+"','"+Lname+"','"+Email+"','"+Contact+"','"+Address+"','"+Password+"','"+register+"')";
+        String query2="insert into recipients(orgname,email) values('"+busname+"','"+Email+"')";
+        int i=smt.executeUpdate(query);
+        int j=smt.executeUpdate(query2);
+        if(i>0 && j>0)
+        {
+        response.sendRedirect("index.html");
+        }
+        else
+        {
+            out.println("record not inserted");
+        }
+        }
+        catch(ClassNotFoundException ex)
+        {
+            out.println(ex);
+        }
+        catch (SQLException ex) 
+        { 
+             Logger.getLogger(ser1.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        }
+    }
     /**
      * Returns a short description of the servlet.
      *

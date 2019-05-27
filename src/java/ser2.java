@@ -11,6 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -72,8 +76,51 @@ public class ser2 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out=response.getWriter();
-        out.println("hello");
+        String lgemail=request.getParameter("logemail");
+        String lgpass=request.getParameter("pass");
+        String str1="donator";
+        String str2="recipient";
+        try
+        {
+        Class.forName("com.mysql.jdbc.Driver");   
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
+        Statement smt=con.createStatement();
+        String query;
+        query = "select type from users where email='"+lgemail+"' AND password='"+lgpass+"'";
+        ResultSet rs=smt.executeQuery(query);
+        String rtype="";
+        int counter=0;
+        while(rs.next())
+        {
+            counter++;
+            rtype=rs.getString(1);
+        }
+        if(counter==1 && rtype.equals(str1))
+        {
+            response.sendRedirect("donator-dashboard.html");
+        }
+        else if(counter==1 && rtype.equals(str2))
+        {
+            response.sendRedirect("recipient-dashboard.html");
+        }
+        else
+        {
+            out.println("login not success");
+        }
+        
+        
+        }
+        catch(ClassNotFoundException ex)
+        {
+            out.println(ex);
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(ser2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
+        
+        
 
     /**
      * Returns a short description of the servlet.
