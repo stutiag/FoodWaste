@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 /**
  *
  * @author Admin
@@ -79,7 +80,7 @@ public class ser1 extends HttpServlet {
         String str2="recipient";
         if(register.equals(str1))
         {
-        String busname, Fname, Lname, Email, Contact, Address,Password;
+        String busname, Fname, Lname, Email, Contact, Address,Password,City;
         busname = request.getParameter("business_name");
         Fname = request.getParameter("fname");
         Lname = request.getParameter("lname");
@@ -87,6 +88,7 @@ public class ser1 extends HttpServlet {
         Contact = request.getParameter("contact");
         Address = request.getParameter("street") + request.getParameter("city") + request.getParameter("state") + request.getParameter("zip");
         Password=request.getParameter("pass");
+        City=request.getParameter("city");
         /*out.println(busname);
         out.println(Fname);
         out.println(Lname);
@@ -98,7 +100,7 @@ public class ser1 extends HttpServlet {
         Class.forName("com.mysql.jdbc.Driver");   
         Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
         Statement smt=con.createStatement();
-        String query ="insert into users(firstname,lastname,email,contact,address,password,type) values ('"+Fname+"','"+Lname+"','"+Email+"','"+Contact+"','"+Address+"','"+Password+"','"+register+"')";
+        String query ="insert into users(firstname,lastname,email,contact,address,password,type,city) values ('"+Fname+"','"+Lname+"','"+Email+"','"+Contact+"','"+Address+"','"+Password+"','"+register+"','"+City+"')";
         String query2="insert into donators(businessname,email) values('"+busname+"','"+Email+"')";
         int i=smt.executeUpdate(query);
         int j=smt.executeUpdate(query2);
@@ -111,19 +113,15 @@ public class ser1 extends HttpServlet {
             out.println("record not inserted");
         }
         }
-        catch(ClassNotFoundException ex)
+        catch(Exception ex)
         {
             out.println(ex);
         }
-        catch (SQLException ex) 
-        { 
-             Logger.getLogger(ser1.class.getName()).log(Level.SEVERE, null, ex);
-        } 
         }
 
     else if(register.equals(str2))
         {
-        String busname, Fname, Lname, Email, Contact, Address,Password;
+        String busname, Fname, Lname, Email, Contact, Address,Password,City;
         busname = request.getParameter("business_name");
         Fname = request.getParameter("fname");
         Lname = request.getParameter("lname");
@@ -131,6 +129,7 @@ public class ser1 extends HttpServlet {
         Contact = request.getParameter("contact");
         Address = request.getParameter("street") + request.getParameter("city") + request.getParameter("state") + request.getParameter("zip");
         Password=request.getParameter("pass");
+        City=request.getParameter("city");
         /*out.println(busname);
         out.println(Fname);
         out.println(Lname);
@@ -142,7 +141,7 @@ public class ser1 extends HttpServlet {
         Class.forName("com.mysql.jdbc.Driver");   
         Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
         Statement smt=con.createStatement();
-        String query ="insert into users(firstname,lastname,email,contact,address,password,type) values ('"+Fname+"','"+Lname+"','"+Email+"','"+Contact+"','"+Address+"','"+Password+"','"+register+"')";
+        String query ="insert into users(firstname,lastname,email,contact,address,password,type,city) values ('"+Fname+"','"+Lname+"','"+Email+"','"+Contact+"','"+Address+"','"+Password+"','"+register+"','"+City+"')";
         String query2="insert into recipients(orgname,email) values('"+busname+"','"+Email+"')";
         int i=smt.executeUpdate(query);
         int j=smt.executeUpdate(query2);

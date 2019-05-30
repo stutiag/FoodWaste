@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -86,22 +87,36 @@ public class ser2 extends HttpServlet {
         Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
         Statement smt=con.createStatement();
         String query;
-        query = "select type from users where email='"+lgemail+"' AND password='"+lgpass+"'";
+        query = "select type,city,firstname from users where email='"+lgemail+"' AND password='"+lgpass+"'";
         ResultSet rs=smt.executeQuery(query);
         String rtype="";
+        String ct="";
+        String Name="";
         int counter=0;
         while(rs.next())
         {
             counter++;
             rtype=rs.getString(1);
+            ct=rs.getString("city");
+            Name=rs.getString("firstname");
+            
         }
         if(counter==1 && rtype.equals(str1))
         {
-            response.sendRedirect("donator-dashboard.html");
+            
+            HttpSession sos=request.getSession();
+            sos.setAttribute("useremail",lgemail);
+            sos.setAttribute("usercity",ct);
+            response.sendRedirect("donator-dashboard.jsp");
         }
         else if(counter==1 && rtype.equals(str2))
         {
-            response.sendRedirect("recipient-dashboard.html");
+            
+            HttpSession sos=request.getSession();
+            sos.setAttribute("useremail",lgemail);
+            sos.setAttribute("usercity",ct);
+            sos.setAttribute("username",Name);
+            response.sendRedirect("recipient-dashboard.jsp");
         }
         else
         {
