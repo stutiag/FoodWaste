@@ -29,6 +29,7 @@
         //out.println("user email is =="+uemail);
         //out.println(ucity);
         %>
+        <a href="logoutprocess.jsp">Logout</a>
         <div class="container">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
@@ -45,6 +46,7 @@
                 <div id="home" class="container tab-pane active"><br>
                   <h3>HOME</h3>
                   <p>Food for humanly</p>
+                  <a href="topicslist.jsp">Community</a>
                 </div>
             <div id="menu1" class="container tab-pane fade"><br>
         <%
@@ -60,14 +62,14 @@
             String  qty="";
             String ty="";
             String exdate="";
-            String srno="";
+            String id="";
             
             out.println("<table class='table'><tr><th>Product Name</th><th>Quantity</th><th>Product Type</th><th>Expiry Date</th><th>Send Request</th></tr>");
             
             while(rs.next())
             {
                 
-            srno=rs.getString("srno");
+            id=rs.getString("id");
             name=rs.getString("name");
             qty=rs.getString("quantity");
             ty=rs.getString("type");
@@ -77,7 +79,7 @@
             out.println("<td>"+qty+"</td>");
             out.println("<td>"+ty+"</td>");
             out.println("<td>"+exdate+"</td>");
-            out.println("<td><a href=receiveditem.jsp?id="+srno+" class='btn btn-danger'>Send Request</a></td>");
+            out.println("<td><a href=receiveditem.jsp?id="+id+" class='btn btn-danger'>Send Request</a></td>");
             out.println("</tr>");
             
             
@@ -102,10 +104,103 @@
         %>
             </div>
             <div id="menu2" class="container tab-pane fade"><br>
-                <h3>Menu 2</h3>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+        <%
+        try
+        {
+          Class.forName("com.mysql.jdbc.Driver");
+          Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
+          Statement smt=con.createStatement();
+          
+          
+          String pp="select * from recieveditems where remail='"+uemail+"' and status=0 ";
+          ResultSet rs=smt.executeQuery(pp);
+            String name="";
+            String  qty="";
+            String id="";
+            String donemail="";
+            
+            
+            out.println("<table class='table'><tr><th>Product Name</th><th>Quantity</th><th>Donator email</th><th>Request Confirm</th></tr>");
+            
+            while(rs.next())
+            {
+                
+            name=rs.getString("name");
+            qty=rs.getString("quantity");
+            donemail=rs.getString("demail");
+            id=rs.getString("id");
+            out.println("<tr>");
+            out.println("<td>"+name+"</td>");
+            out.println("<td>"+qty+"</td>");
+            out.println("<td>"+donemail+"</td>");
+            out.println("<td><a href=confirmorder.jsp?id="+id+">Confirmation</a></td>");
+            
+            
+            
+            out.println("</tr>");
+             
+            }
+            out.println("</table>");
+        }
+        
+        catch(Exception e)
+        {
+            out.println(e);
+                    
+        }
+        %>
+  <%
+    out.println("<h2>--------------------------Confirmed orders----------------------------------</h2>");
+ 
+        try
+        {
+          Class.forName("com.mysql.jdbc.Driver");
+          Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
+          Statement smt=con.createStatement();
+          
+          
+          String pp="select * from recieveditems where status= 1 ";
+          ResultSet rs=smt.executeQuery(pp);
+            String name="";
+            String  qty="";
+            String idd="";
+            String donemail="";
+            
+            
+            out.println("<table class='table'><tr><th>Product Name</th><th>Quantity</th><th>Donator email</th><th>Request Confirm</th></tr>");
+            
+            while(rs.next())
+            {
+                
+            name=rs.getString("name");
+            qty=rs.getString("quantity");
+            donemail=rs.getString("demail");
+            idd=rs.getString("id");
+            out.println("<tr>");
+            out.println("<td>"+name+"</td>");
+            out.println("<td>"+qty+"</td>");
+            out.println("<td>"+donemail+"</td>");
+            out.println("<td><a href=confirmorder.jsp?ic="+idd+">Update_Orders</a></td>");
+            
+            
+            
+            out.println("</tr>");
+             
+            }
+            out.println("</table>");
+        }
+        
+        catch(Exception e)
+        {
+            out.println(e);
+                    
+        }
+        %>
             </div>
+                
             </div>
-        </div>
+            
+            </div>
+    </div>
     </body>
 </html>

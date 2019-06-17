@@ -106,7 +106,7 @@ public class ser1 extends HttpServlet {
         int j=smt.executeUpdate(query2);
         if(i>0 && j>0)
         {
-        response.sendRedirect("index.html");
+        response.sendRedirect("index.jsp");
         }
         else
         {
@@ -147,7 +147,7 @@ public class ser1 extends HttpServlet {
         int j=smt.executeUpdate(query2);
         if(i>0 && j>0)
         {
-        response.sendRedirect("index.html");
+        response.sendRedirect("index.jsp");
         }
         else
         {

@@ -29,11 +29,11 @@
         {
             String email=request.getParameter("email");
             String name=request.getParameter("name");
-            String srno=request.getParameter("id");
+            String id=request.getParameter("id");
             Class.forName("com.mysql.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
             Statement smt=con.createStatement();
-            String q1="select * from donateditems where srno='"+srno+"' ";
+            String q1="select * from donateditems where id='"+id+"' ";
             
             ResultSet rs=smt.executeQuery(q1);
             String n="";
@@ -51,16 +51,19 @@
                
                
            }
-            String pp="insert into recieveditems(name,quantity,demail,rname,remail) values('"+n+"', '"+q+"', '"+de+"', '"+uname+"', '"+uemail+"'     )";
+            String pp="insert into recieveditems(id,name,quantity,demail,rname,remail) values('"+id+"','"+n+"', '"+q+"', '"+de+"', '"+uname+"', '"+uemail+"'     )";
             
           
            int i=smt.executeUpdate(pp);
            if(i>0)
            {
-           out.println("item recieved...");
+           response.sendRedirect("recipient-dashboard.jsp");
            }
-            
+           String q2="delete from donateditems where id='"+id+"' ";
+           smt.executeUpdate(q2);
         }
+        
+        
         catch(Exception e)
         {
         out.println(e);

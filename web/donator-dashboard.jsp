@@ -18,6 +18,7 @@
     </head>
     <body>
         
+        <%@page import="java.sql.*" %>
         <%
         
         String uemail=(String)session.getAttribute("useremail");
@@ -26,8 +27,9 @@
         //out.println(ucity);
         
         %>
+        <a href="logoutprocess.jsp">Logout</a>
         <div class="container">
-            <ul class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs bg-success navbar-dark" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
                 </li>
@@ -42,6 +44,8 @@
                 <div id="home" class="container tab-pane active"><br>
                   <h3>HOME</h3>
                   <p>Food for humanly</p>
+                  <a href="topicslist.jsp">Community</a>
+               
                 </div>
             <div id="menu1" class="container tab-pane fade"><br>
                 <form action="additem.jsp" name="additemform" method="post">
@@ -80,8 +84,45 @@
                     </form>
             </div>
             <div id="menu2" class="container tab-pane fade"><br>
-                <h3>Menu 2</h3>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                <h3></h3>
+        <%
+        try
+        {
+          Class.forName("com.mysql.jdbc.Driver");
+          Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
+          Statement smt=con.createStatement();
+          
+          
+          String pp="select * from donateditems where demail='"+uemail+"'";
+          ResultSet rs=smt.executeQuery(pp);
+          String name="";
+            String  qty="";
+            String ty="";
+            String exdate="";
+            String srno="";
+            
+            out.println("<table class='table'><tr><th>Product Name</th><th>Quantity</th></tr>");
+            
+            while(rs.next())
+            {
+                
+            name=rs.getString("name");
+            qty=rs.getString("quantity");
+            out.println("<tr>");
+            out.println("<td>"+name+"</td>");
+            out.println("<td>"+qty+"</td>");
+            out.println("</tr>");
+             
+            }
+            out.println("</table>");
+        }
+        
+        catch(Exception e)
+        {
+            out.println(e);
+                    
+        }
+          %>
             </div>
         </div>
         </div>

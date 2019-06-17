@@ -125,13 +125,11 @@ public class ser2 extends HttpServlet {
         
         
         }
-        catch(ClassNotFoundException ex)
+        catch(IOException | ClassNotFoundException | SQLException ex)
         {
             out.println(ex);
         } 
-        catch (SQLException ex) {
-            Logger.getLogger(ser2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
     }
         
