@@ -59,19 +59,23 @@
             ResultSet rs=smt.executeQuery(query);
             
             String name="";
-            String  qty="";
+            Integer  qty;
             String ty="";
             String exdate="";
             String id="";
             
-            out.println("<table class='table'><tr><th>Product Name</th><th>Quantity</th><th>Product Type</th><th>Expiry Date</th><th>Send Request</th></tr>");
+            out.println("<table class='table'><tr><th>Product Name</th>"
+                    + "<th>Quantity</th><th>Product Type</th>"
+                    + "<th>Best Before</th><th>Requested Qty</th><th>Send Request</th></tr>");
             
             while(rs.next())
             {
                 
             id=rs.getString("id");
             name=rs.getString("name");
-            qty=rs.getString("quantity");
+            qty=rs.getInt("quantity");
+            Integer rQty = rs.getInt("requested_qty");
+            Integer availableQty = qty - rQty;
             ty=rs.getString("type");
             exdate=rs.getString("exdate");
             out.println("<tr>");
@@ -79,6 +83,7 @@
             out.println("<td>"+qty+"</td>");
             out.println("<td>"+ty+"</td>");
             out.println("<td>"+exdate+"</td>");
+            out.println("<td><input type=\"number\" name=\"rqty\" min=\"1\" max=\"" + availableQty + "\" required></td>");
             out.println("<td><a href=receiveditem.jsp?id="+id+" class='btn btn-danger'>Send Request</a></td>");
             out.println("</tr>");
             

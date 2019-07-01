@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -96,20 +98,30 @@
           String pp="select * from donateditems where demail='"+uemail+"'";
           ResultSet rs=smt.executeQuery(pp);
           String name="";
-            String  qty="";
+            Integer  qty=0;
             String ty="";
             String exdate="";
             String srno="";
+            Integer requestedQty = 0;
             
-            out.println("<table class='table'><tr><th>Product Name</th><th>Quantity</th></tr>");
+            out.println("<table class='table'><tr><th>Product Name</th>"
+                    + "<th>Type</th><th>Best Before</th>"
+                    + "<th>Available Quantity</th><th>Total Donated Quantity</th></tr>");
             
             while(rs.next())
             {
                 
             name=rs.getString("name");
-            qty=rs.getString("quantity");
+            qty=rs.getInt("quantity");
+            ty = rs.getString("type");
+            exdate = rs.getString("exdate");
+            requestedQty = rs.getInt("requested_qty");
             out.println("<tr>");
             out.println("<td>"+name+"</td>");
+            out.println("<td>"+ty+"</td>");
+            out.println("<td>"+exdate+"</td>");
+            Integer availableQty = qty - requestedQty;
+            out.println("<td>"+ availableQty +"</td>");
             out.println("<td>"+qty+"</td>");
             out.println("</tr>");
              

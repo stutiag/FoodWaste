@@ -30,6 +30,7 @@
             String email=request.getParameter("email");
             String name=request.getParameter("name");
             String id=request.getParameter("id");
+            Integer rQty = Integer.parseInt(request.getParameter("rqty"));
             Class.forName("com.mysql.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost/food-waste","root","");
             Statement smt=con.createStatement();
@@ -37,30 +38,28 @@
             
             ResultSet rs=smt.executeQuery(q1);
             String n="";
-            String q="";
+            Integer q = 0;
             String de="";
            
-           while(rs.next())
+           if(rs.next())
            {
                
                n=rs.getString("name");
-                q=rs.getString("quantity");
+                q=rs.getInt("quantity");
                 de=rs.getString("demail");
                
-               
-               
-               
-           }
-            String pp="insert into recieveditems(id,name,quantity,demail,rname,remail) values('"+id+"','"+n+"', '"+q+"', '"+de+"', '"+uname+"', '"+uemail+"'     )";
+            String pp="insert into recieveditems(id,name,quantity,demail,"
+                    + "rname,remail) values('"+id+"','"+n+"', '"+rQty+"', '"+de+"',"
+                    + " '"+uname+"', '"+uemail+"')";
             
-          
            int i=smt.executeUpdate(pp);
            if(i>0)
            {
            response.sendRedirect("recipient-dashboard.jsp");
            }
-           String q2="delete from donateditems where id='"+id+"' ";
-           smt.executeUpdate(q2);
+           String q2="update donateditems set where id='"+id+"' ";
+           }
+           //smt.executeUpdate(q2);
         }
         
         
